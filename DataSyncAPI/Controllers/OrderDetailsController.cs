@@ -11,56 +11,56 @@ namespace DataSyncAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductsController : ControllerBase
+    public class OrderDetailsController : ControllerBase
     {
         private readonly eretailContext _context;
 
-        public ProductsController(eretailContext context)
+        public OrderDetailsController(eretailContext context)
         {
             _context = context;
         }
 
-        // GET: api/Products
+        // GET: api/OrderDetails
         [HttpGet]
-        public IEnumerable<Product> GetProduct()
+        public IEnumerable<Orderdetail> GetOrderdetail()
         {
-            return _context.Product;
+            return _context.Orderdetail;
         }
 
-        // GET: api/Products/5
+        // GET: api/OrderDetails/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetProduct([FromRoute] int id)
+        public async Task<IActionResult> GetOrderdetail([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var product = await _context.Product.FindAsync(id);
+            var orderdetail = await _context.Orderdetail.FindAsync(id);
 
-            if (product == null)
+            if (orderdetail == null)
             {
                 return NotFound();
             }
 
-            return Ok(product);
+            return Ok(orderdetail);
         }
 
-        // PUT: api/Products/5
+        // PUT: api/OrderDetails/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduct([FromRoute] int id, [FromBody] Product product)
+        public async Task<IActionResult> PutOrderdetail([FromRoute] int id, [FromBody] Orderdetail orderdetail)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != product.Productno)
+            if (id != orderdetail.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(product).State = EntityState.Modified;
+            _context.Entry(orderdetail).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace DataSyncAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ProductExists(id))
+                if (!OrderdetailExists(id))
                 {
                     return NotFound();
                 }
@@ -81,45 +81,45 @@ namespace DataSyncAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Products
+        // POST: api/OrderDetails
         [HttpPost]
-        public async Task<IActionResult> PostProduct([FromBody] Product product)
+        public async Task<IActionResult> PostOrderdetail([FromBody] Orderdetail orderdetail)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.Product.Add(product);
+            _context.Orderdetail.Add(orderdetail);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetProduct", new { id = product.Productno }, product);
+            return CreatedAtAction("GetOrderdetail", new { id = orderdetail.Id }, orderdetail);
         }
 
-        // DELETE: api/Products/5
+        // DELETE: api/OrderDetails/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProduct([FromRoute] int id)
+        public async Task<IActionResult> DeleteOrderdetail([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var product = await _context.Product.FindAsync(id);
-            if (product == null)
+            var orderdetail = await _context.Orderdetail.FindAsync(id);
+            if (orderdetail == null)
             {
                 return NotFound();
             }
 
-            _context.Product.Remove(product);
+            _context.Orderdetail.Remove(orderdetail);
             await _context.SaveChangesAsync();
 
-            return Ok(product);
+            return Ok(orderdetail);
         }
 
-        private bool ProductExists(int id)
+        private bool OrderdetailExists(int id)
         {
-            return _context.Product.Any(e => e.Productno == id);
+            return _context.Orderdetail.Any(e => e.Id == id);
         }
     }
 }

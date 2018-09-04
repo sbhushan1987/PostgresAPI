@@ -11,56 +11,56 @@ namespace DataSyncAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductsController : ControllerBase
+    public class InventoryController : ControllerBase
     {
         private readonly eretailContext _context;
 
-        public ProductsController(eretailContext context)
+        public InventoryController(eretailContext context)
         {
             _context = context;
         }
 
-        // GET: api/Products
+        // GET: api/Inventory
         [HttpGet]
-        public IEnumerable<Product> GetProduct()
+        public IEnumerable<Inventorydetail> GetInventorydetail()
         {
-            return _context.Product;
+            return _context.Inventorydetail;
         }
 
-        // GET: api/Products/5
+        // GET: api/Inventory/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetProduct([FromRoute] int id)
+        public async Task<IActionResult> GetInventorydetail([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var product = await _context.Product.FindAsync(id);
+            var inventorydetail = await _context.Inventorydetail.FindAsync(id);
 
-            if (product == null)
+            if (inventorydetail == null)
             {
                 return NotFound();
             }
 
-            return Ok(product);
+            return Ok(inventorydetail);
         }
 
-        // PUT: api/Products/5
+        // PUT: api/Inventory/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduct([FromRoute] int id, [FromBody] Product product)
+        public async Task<IActionResult> PutInventorydetail([FromRoute] int id, [FromBody] Inventorydetail inventorydetail)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != product.Productno)
+            if (id != inventorydetail.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(product).State = EntityState.Modified;
+            _context.Entry(inventorydetail).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace DataSyncAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ProductExists(id))
+                if (!InventorydetailExists(id))
                 {
                     return NotFound();
                 }
@@ -81,45 +81,45 @@ namespace DataSyncAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Products
+        // POST: api/Inventory
         [HttpPost]
-        public async Task<IActionResult> PostProduct([FromBody] Product product)
+        public async Task<IActionResult> PostInventorydetail([FromBody] Inventorydetail inventorydetail)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.Product.Add(product);
+            _context.Inventorydetail.Add(inventorydetail);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetProduct", new { id = product.Productno }, product);
+            return CreatedAtAction("GetInventorydetail", new { id = inventorydetail.Id }, inventorydetail);
         }
 
-        // DELETE: api/Products/5
+        // DELETE: api/Inventory/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProduct([FromRoute] int id)
+        public async Task<IActionResult> DeleteInventorydetail([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var product = await _context.Product.FindAsync(id);
-            if (product == null)
+            var inventorydetail = await _context.Inventorydetail.FindAsync(id);
+            if (inventorydetail == null)
             {
                 return NotFound();
             }
 
-            _context.Product.Remove(product);
+            _context.Inventorydetail.Remove(inventorydetail);
             await _context.SaveChangesAsync();
 
-            return Ok(product);
+            return Ok(inventorydetail);
         }
 
-        private bool ProductExists(int id)
+        private bool InventorydetailExists(int id)
         {
-            return _context.Product.Any(e => e.Productno == id);
+            return _context.Inventorydetail.Any(e => e.Id == id);
         }
     }
 }

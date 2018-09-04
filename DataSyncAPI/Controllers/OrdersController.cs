@@ -11,56 +11,56 @@ namespace DataSyncAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductsController : ControllerBase
+    public class OrdersController : ControllerBase
     {
         private readonly eretailContext _context;
 
-        public ProductsController(eretailContext context)
+        public OrdersController(eretailContext context)
         {
             _context = context;
         }
 
-        // GET: api/Products
+        // GET: api/Orders
         [HttpGet]
-        public IEnumerable<Product> GetProduct()
+        public IEnumerable<Orders> GetOrders()
         {
-            return _context.Product;
+            return _context.Orders;
         }
 
-        // GET: api/Products/5
+        // GET: api/Orders/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetProduct([FromRoute] int id)
+        public async Task<IActionResult> GetOrders([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var product = await _context.Product.FindAsync(id);
+            var orders = await _context.Orders.FindAsync(id);
 
-            if (product == null)
+            if (orders == null)
             {
                 return NotFound();
             }
 
-            return Ok(product);
+            return Ok(orders);
         }
 
-        // PUT: api/Products/5
+        // PUT: api/Orders/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduct([FromRoute] int id, [FromBody] Product product)
+        public async Task<IActionResult> PutOrders([FromRoute] int id, [FromBody] Orders orders)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != product.Productno)
+            if (id != orders.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(product).State = EntityState.Modified;
+            _context.Entry(orders).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace DataSyncAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ProductExists(id))
+                if (!OrdersExists(id))
                 {
                     return NotFound();
                 }
@@ -81,45 +81,45 @@ namespace DataSyncAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Products
+        // POST: api/Orders
         [HttpPost]
-        public async Task<IActionResult> PostProduct([FromBody] Product product)
+        public async Task<IActionResult> PostOrders([FromBody] Orders orders)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.Product.Add(product);
+            _context.Orders.Add(orders);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetProduct", new { id = product.Productno }, product);
+            return CreatedAtAction("GetOrders", new { id = orders.Id }, orders);
         }
 
-        // DELETE: api/Products/5
+        // DELETE: api/Orders/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProduct([FromRoute] int id)
+        public async Task<IActionResult> DeleteOrders([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var product = await _context.Product.FindAsync(id);
-            if (product == null)
+            var orders = await _context.Orders.FindAsync(id);
+            if (orders == null)
             {
                 return NotFound();
             }
 
-            _context.Product.Remove(product);
+            _context.Orders.Remove(orders);
             await _context.SaveChangesAsync();
 
-            return Ok(product);
+            return Ok(orders);
         }
 
-        private bool ProductExists(int id)
+        private bool OrdersExists(int id)
         {
-            return _context.Product.Any(e => e.Productno == id);
+            return _context.Orders.Any(e => e.Id == id);
         }
     }
 }
